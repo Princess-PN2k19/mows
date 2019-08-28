@@ -8,14 +8,7 @@ var unsubscribe = document.getElementById('btn-unsubscribe')
 var 
 
 client = mqtt.connect("ws://broker.hivemq.com:8000/mqtt")
-// client.subscribe("mqtt/demo")
 
-client.on("message", function (topic, payload) {
-  console.log([topic, payload].join(": "));
-  client.end();
-})
-
-// client.publish("mqtt/demo", "hello world!")
 
 connect.addEventListener('click', function(e) {
 	e.preventDefault();
@@ -23,11 +16,18 @@ connect.addEventListener('click', function(e) {
 	document.getElementById('status').value = "Connected successfully!";
 
 	subscribe.addEventListener('click', function() {
-		client.subscribe(document.getElementById('sub-topic').value)
+		client.subscribe(document.getElementById('topic').value)
+	})
+
+	unsubscribe.addEventListener('click', function() {
+		client.subscribe(document.getElementById('topic').value + 'un')
+		document.getElementById('sub-topic').value = "";
 	})
 
 	publish.addEventListener('click', function() {
-		client.publish(document.getElementById('pub-topic').value, document.getElementById('payload').value)
+		client.on("message", function(topic, payload) {
+			console.log([topic, payload].join(": "));
+		})
 	})
 })
 
