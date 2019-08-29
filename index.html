@@ -1,69 +1,90 @@
 <html>
+
 <head>
-  <title>PJ's MOWS</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<title>PJ's MOWS</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
+
 <body style="margin: 1%">
-  <h1>MQTT</h1>
-  <p>My MQTT Web App</p>
-  <div class="row">
-  	<div id="broker" class="col-sm-4" class="container" class="card" style="background-color: #ffccff">
-  		<center><p class="card-header" style="background-color: #cc99ff;">Broker</p></center>
-  		<div class="card-body">
-  			<form>
-  				<div class="form-group">
-  					<label class="bmd-label-static">Address:</label>
-                    <input type="text" class="form-control" id="address">
-                    <label class="bmd-label-static">Status:</label>
-                    <input type="text" class="form-control" id="status">
-  				</div>
-  				<div>
-  					<button id="btn-connect" type="button" style="background-color: #cc99ff;">Connect</button>
-    				<button id="btn-disconnect" type="button" style="background-color: #cc99ff;">Disconnect</button>
-  				</div>
-  			</form>
-  		</div>
-  	</div>
+	<div class="mows" style="margin-right: 2%; float: right; width: 40%">
+		<div id="broker" class="container" class="card" style="background-color: #ffccff; width: 100%">
+			<center>
+				<h3 class="card-header" style="background-color: #cc99ff;">Broker</h3>
+			</center>
+			<div class="card-body">
+				<form>
+					<div class="col-sm-8" class="form-group">
+						<label class="bmd-label-static">Address:</label>
+						<input type="text" class="form-control" id="address">
+						<label class="bmd-label-static">Status:</label>
+						<input type="text" class="form-control" id="status">
+					</div>
+					<div class="col-sm-6">
+						<button id="btn-connect" type="button" style="background-color: #cc99ff;">Connect</button>
+						<button id="btn-disconnect" type="button" style="background-color: #cc99ff;">Disconnect</button>
+					</div>
+				</form>
+			</div>
+		</div>
 
-	  <div id="publish" class="col-sm-4" class="container" class="card" style="background-color: #ffccff;">
-	  	<center><p class="card-header" style="background-color: #cc99ff;">Publish</p></center>
-	  	<div class="card-body">
-	  		<form>
-	  			<div class="form-group">
-  					<label class="bmd-label-static">Topic:</label>
-                    <input type="text" class="form-control" id="pub-topic">
-  					<label class="bmd-label-static">Payload:</label>
-                    <input type="text" class="form-control" id="payload">
-	  			</div>
-	  			<div>
-	  				<button id="btn-publish" type="button" style="background-color: #cc99ff;">Publish</button>
-	  			</div>
-	  		</form>
-	  	</div>
-	 </div>
+		<div id="publish" class="container" class="card" style="background-color: #ffccff; width: 100%">
+			<center>
+				<h3 class="card-header" style="background-color: #cc99ff;">Publish</h3>
+			</center>
+			<div class="card-body">
+				<form>
+					<div class="col-sm-8" class="form-group">
+						<label class="bmd-label-static">Topic:</label>
+						<input type="text" class="form-control" id="pub-topic">
+						<label class="bmd-label-static">Payload:</label>
+						<input type="text" class="form-control" id="payload">
+					</div>
+					<div class="col-sm-6">
+						<button id="btn-publish" type="button" style="background-color: #cc99ff;">Publish</button>
+					</div>
+				</form>
+			</div>
+		</div>
 
-	 <div id="subscribe" class="col-sm-4" class="container" class="card" style="background-color: #ffccff;">
-	  	<center><p class="card-header" style="background-color: #cc99ff;">Subscribe</p></center>
-	  	<div class="card-body">
-	  		<form>
-	  			<div class="form-group">
-  					<label class="bmd-label-static">Topic:</label>
-                    <input type="text" class="form-control" id="sub-topic">
-	  			</div>
-	  			<div>
-	  				<button id="btn-subscribe" type="button" style="background-color: #cc99ff;">Subscribe</button>
-	  				<button id="btn-unsubscribe" type="button" style="background-color: #cc99ff;">Unsubscribe</button>
-	  			</div>
-	  		</form>
-	  		
-	  	</div>
+		<div id="subscribe" class="container" class="card" style="background-color: #ffccff; width: 100%">
+			<center>
+				<h3 class="card-header" style="background-color: #cc99ff;">Subscribe</h3>
+			</center>
+			<div class="card-body">
+				<form>
+					<div class="col-sm-8" class="form-group">
+						<label class="bmd-label-static">Topic:</label>
+						<input type="text" class="form-control" id="sub-topic">
+					</div>
+					<div class="col-sm-6">
+						<button id="btn-subscribe" type="button" style="background-color: #cc99ff;">Subscribe</button>
+						<button id="btn-unsubscribe" type="button" style="background-color: #cc99ff;">Unsubscribe</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<div class="table" style="margin-left: 5%; float: left; width: 50%">
+		<table class="table table-bordered" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Topic</th>
+					<th>Payload</th>
+					<th>Time</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr></tr>
+			</tbody>
+		</table>
 	 </div>
-  </div>
 </body>
 <script src="scripts/browserMqtt.js"></script>
 <script src="scripts/controller.js"></script>
+
 </html>
