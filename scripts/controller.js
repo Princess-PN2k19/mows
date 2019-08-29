@@ -1,14 +1,14 @@
 // basic functionalities
-var connect = document.getElementById('btn-connect')
-var disconnect = document.getElementById('btn-disconnect')
-var status = document.getElementById('status')
-var publish = document.getElementById('btn-publish')
-var subscribe = document.getElementById('btn-subscribe')
-var unsubscribe = document.getElementById('btn-unsubscribe')
-var tableRef = document.getElementsByTagName('tbody')[0]
+var connect = document.getElementById('btn-connect');
+var disconnect = document.getElementById('btn-disconnect');
+var status = document.getElementById('status');
+var publish = document.getElementById('btn-publish');
+var subscribe = document.getElementById('btn-subscribe');
+var unsubscribe = document.getElementById('btn-unsubscribe');
+var tableRef = document.getElementsByTagName('tbody')[0];
 var newRow = tableRef.insertRow();
-var newCell = tableRef.insertCell(0);
-// newCell.appendChild()
+var newCell = newRow.insertCell(0);
+
 
 client = mqtt.connect("ws://broker.hivemq.com:8000/mqtt")
 
@@ -23,7 +23,7 @@ connect.addEventListener('click', function(e) {
 			if (err) {
 				alert(err);
 			} else {
-				alert("Subscibed!")
+				alert("Subscibed!");
 			}
 		})
 	})
@@ -41,7 +41,14 @@ connect.addEventListener('click', function(e) {
 			if (err) {
 				alert(err);
 			} else {
-				alert("Published!")
+				alert("Published!");
+				var topic= document.createElement('p');
+				var payload= document.createElement('p');
+				var date= document.createElement('p');
+				date.innerHTML = new Date().toLocaleString();
+				topic.innerHTML = document.getElementById('pub-topic').value;
+				payload.innerHTML = document.getElementById('payload').value;
+				newCell.appendChild('<tr><td>'+topic+'</td><td>'+payload+'</td><td>'+date+'</td></tr>')
 			}
 		})
 	})
