@@ -4,7 +4,8 @@
   "description": "MQTT over Websocket Web App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node index.js"
   },
   "author": "Jun Rey Ansing",
   "license": "ISC",
@@ -22,7 +23,8 @@
   },
   "homepage": "https://github.com/junreycloudstrife/mows#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mqtt": "^3.0.0"
   },
   "devDependencies": {},
   "engines": {
