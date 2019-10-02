@@ -1,39 +1,62 @@
 <html>
-
 <head>
 	<title>PJ's MOWS</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
+<body>
+	<div class="header">
+	  <h1>MQTT Over Websocket</h1>
+	</div>
 
-<body style="margin: 1%">
-	<div class="mows" style="margin-right: 2%; float: right; width: 40%">
-		<div id="broker" class="container" class="card" style="background-color: #ffe6e6; width: 100%">
+	<div class="mows">
+		<div id="broker" class="container" class="card">
 			<center>
-				<h2 class="card-header" style="background-color: #ffb3b3;">Broker</h2>
+				<h2 class="card-header">Broker</h2>
 			</center>
 			<div class="card-body">
 				<form>
 					<div class="col-sm-8" class="form-group">
 						<label class="bmd-label-static">Address:</label>
-						<input type="text" class="form-control" id="address" value="ws://broker.hivemq.com:8000/mqtt">
+						<input type="text" class="form-control" id="address" value="wss://test.mosquitto.org:8081/mqtt">
 						<label class="bmd-label-static">Status:</label>
 						<input type="text" class="form-control" id="status">
 					</div>
 					<div class="col-sm-6">
-						<button id="btn-connect" type="button" style="background-color: #ffb3b3;">Connect</button>
-						<button id="btn-disconnect" type="button" style="background-color: #ffb3b3;">Disconnect</button>
+						<button id="btn-connect" type="button">Connect</button>
+						<button id="btn-disconnect" type="button">Disconnect</button>
 					</div>
 				</form>
 			</div>
 		</div>
 
-		<div id="publish" class="container" class="card" style="background-color: #ffe6e6; width: 100%">
+		<div id="subscribe" class="container" class="card">
 			<center>
-				<h2 class="card-header" style="background-color: #ffb3b3;">Publish</h2>
+				<h2 class="card-header">Subscribe</h2>
+			</center>
+			<div class="card-body">
+				<form>
+					<div class="col-sm-8" class="form-group">
+						<label class="bmd-label-static">Topic:</label>
+						<input type="text" class="form-control" id="sub-topic">
+					</div>
+					<div class="col-sm-6">
+						<button id="btn-subscribe" type="button">Subscribe</button>
+						<button id="btn-unsubscribe" type="button">Unsubscribe</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+
+
+		<div id="publish" class="container" class="card">
+			<center>
+				<h2 class="card-header">Publish</h2>
 			</center>
 			<div class="card-body">
 				<form>
@@ -44,60 +67,25 @@
 						<input type="text" class="form-control" id="payload">
 					</div>
 					<div class="col-sm-6">
-						<button id="btn-publish" type="button" style="background-color: #ffb3b3;">Publish</button>
+						<button id="btn-publish" type="button">Publish</button>
 					</div>
 				</form>
 			</div>
 		</div>
-
-		<div id="subscribe" class="container" class="card" style="background-color: #ffe6e6; width: 100%">
-			<center>
-				<h2 class="card-header" style="background-color: #ffb3b3;">Subscribe</h2>
-			</center>
-			<div class="card-body">
-				<form>
-					<div class="col-sm-8" class="form-group">
-						<label class="bmd-label-static">Topic:</label>
-						<input type="text" class="form-control" id="sub-topic">
-					</div>
-					<div class="col-sm-6">
-						<button id="btn-subscribe" type="button" style="background-color: #ffb3b3;">Subscribe</button>
-						<button id="btn-unsubscribe" type="button"
-							style="background-color: #ffb3b3;">Unsubscribe</button>
-					</div>
-				</form>
-
-			</div>
-		</div>
-	</div>
-	<div class="row overflow-auto" style="height:200px; margin-left: 5%; float: left; width: 50%">
-		<table class="table table-bordered" class="table table-hover">
-			<thead>
-				<tr>
-					<th class="danger" style="width:20%;" scope="col">Topic</th>
-					<th class="danger" style="width:45%;" scope="col">Payload</th>
-					<th class="danger" style="width:35%;" scope="col">Time Stamp</th>
-				</tr>
-			</thead>
-			<tbody id="tBody">
-			</tbody>
-		</table>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-md-6" style="border: 2px solid black; margin-left: 5%; float: left; width: 50%">
+		<br>
+		<div id="PubHistory" class="col-md-12">
 			<div class="row">
-				<div class="col-md-12" style="color:black; text-align: center; height: 40px; background-color: #ffb3b3">
+				<div id="PubsubTbl" class="col-md-12">
 					<h4>Publication History</h4>
 				</div>
 			</div>
-			<div class="row overflow-auto" style="height:200px; margin-left: 5%; float: left; width: 50%">
+			<div id="pubSubDiv" class="row overflow-auto">
 				<table class="col-md-12" class="table table-bordered" class="table table-hover">
 					<thead>
 						<tr>
-							<th style="width:20%;" scope="col">Topic</th>
-							<th style="width: 35%;" scope="col">Payload</th>
-							<th style="width:45%;" scope="col">Time Stamp</th>
+							<th id="th1" scope="col">Topic</th>
+							<th id="th2" scope="col">Payload</th>
+							<th id="th3" scope="col">Time Stamp</th>
 						</tr>
 					</thead>
 					<tbody id="tBodyPub">
@@ -105,18 +93,19 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-md-6" style="border: 2px solid black; margin-left: 5%; float: left; width: 50%">
+		<br>
+		<div id="SubHistory" class="col-md-12">
 			<div class="row">
-				<div class="col-md-12" style="color:black; text-align: center; background-color: #ffb3b3; height: 40px;">
+				<div id="PubSubTbl" class="col-md-12">
 					<h4>Subscription History</h4>
 				</div>
 			</div>
-			<div class="row overflow-auto" style="height:200px; margin-left: 5%; float: left; width: 50%">
+			<div id="pubSubDiv" class="row overflow-auto">
 				<table class="col-md-12" class="table table-bordered" class="table table-hover">
 					<thead>
 						<tr>
-							<th style="width:40%;" scope="col">Topic</th>
-							<th style="width:60%;" scope="col">Time Stamp</th>
+							<th id="subTh1" scope="col">Topic</th>
+							<th id="subTh2" scope="col">Time Stamp</th>
 						</tr>
 					</thead>
 					<tbody id="tBodySub">
@@ -124,6 +113,20 @@
 				</table>
 			</div>
 		</div>
+	</div>
+	
+	<div id="tblDiv" class="row overflow-auto">
+		<table class="table table-bordered" class="table table-hover">
+			<thead>
+				<tr>
+					<th id="th1" class="danger" scope="col">Topic</th>
+					<th id="th2" class="danger" scope="col">Payload</th>
+					<th id="th3" class="danger" scope="col">Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody id="tBody">
+			</tbody>
+		</table>
 	</div>
 </body>
 <script src="scripts/browserMqtt.js"></script>

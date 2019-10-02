@@ -4,31 +4,27 @@ var clickConnect = document.getElementById('btn-connect');
 var clickDisconnect = document.getElementById("btn-disconnect");
 var Status = document.getElementById("status");
 var publishTopic = document.getElementById('pub-topic');
-var payload = document.getElementById('payload');
+var pubPayload = document.getElementById('payload');
 var clickPublish = document.getElementById('btn-publish');
 var inputSubscribe = document.getElementById('sub-topic');
 var clickSubscribe = document.getElementById('btn-subscribe');
 var clickUnsubscribe = document.getElementById('btn-unsubscribe');
-var tableBody = document.getElementById("tBody");
-var tableBodyPublish = document.getElementById("tBody-Pub");
-var tableBodySubscribe = document.getElementById("tBody-Sub");
 var timeStamp;
 
 clickConnect.addEventListener('click', function () {
 	client = mqtt.connect(address.value);
+	Status.value = "Connecting....";
 
-	client.on("connect", function (e) {
-		e.preventDefault();
-		Status.val() = "Connected Successfully!"
-		// Status.innerHTML = "Successfully connected!";
-		// Status.style.color = 'green';
+	client.on("connect", function () {
+		Status.value = "Connected Successfully!";
 		clickPublish.disabled = false;
 		clickSubscribe.disabled = false;
 		clickUnsubscribe.disabled = false;
 	})
 
+	
 	clickPublish.addEventListener('click', function () {
-		client.publish("mqtt/" + publishTopic.value, payload.value);
+		client.publish(publishTopic.value, pubPayload.value);
 		timeStamp = new Date();
 		var trPublish = document.createElement("tr");
 		var tdTopicPublish = document.createElement("td");
@@ -38,16 +34,16 @@ clickConnect.addEventListener('click', function () {
 		tdPayloadPublish.style.fontSize = '11px';
 		tdTimeStampPublish.style.fontSize = '11px';
 		tdTopicPublish.appendChild(document.createTextNode(publishTopic.value));
-		tdPayloadPublish.appendChild(document.createTextNode(payload.value));
+		tdPayloadPublish.appendChild(document.createTextNode(pubPayload.value));
 		tdTimeStampPublish.appendChild(document.createTextNode(timeStamp));
 		trPublish.appendChild(tdTopicPublish);
 		trPublish.appendChild(tdPayloadPublish);
 		trPublish.appendChild(tdTimeStampPublish);
-		tBody - Pub.appendChild(trPublish);
+		tBodyPub.appendChild(trPublish);
 	})
 
 	clickSubscribe.addEventListener('click', function () {
-		client.subscribe("mqtt/" + inputSubscribe.value);
+		client.subscribe(inputSubscribe.value);
 		timeStamp = new Date();
 		var trSubscribe = document.createElement("tr");
 		var tdTopicSubscribe = document.createElement("td");
@@ -58,65 +54,39 @@ clickConnect.addEventListener('click', function () {
 		tdTimeStampSubscribe.appendChild(document.createTextNode(timeStamp));
 		trSubscribe.appendChild(tdTopicSubscribe);
 		trSubscribe.appendChild(tdTimeStampSubscribe);
-		tBody - Sub.appendChild(trSubscribe);
+		tBodySub.appendChild(trSubscribe);
+	})
+
+	client.on("message", function (topic, payload) {
+		timeStamp = new Date();
+		var tr = document.createElement("tr");
+		var tdTopic = document.createElement("td");
+		var tdPayload = document.createElement("td");
+		var tdTimeStamp = document.createElement("td");
+		tdTopic.style.fontSize = "11px";
+		tdPayload.style.fontSize = "11px";
+		tdTimeStamp.style.fontSize = "11px";
+		tdTopic.appendChild(document.createTextNode(topic));
+		tdPayload.appendChild(document.createTextNode(payload));
+		tdTimeStamp.appendChild(document.createTextNode(timeStamp));
+		tr.appendChild(tdTopic);
+		tr.appendChild(tdPayload);
+		tr.appendChild(tdTimeStamp);
+		tBody.appendChild(tr);
 	})
 
 	clickUnsubscribe.addEventListener('click', function () {
 		client.unsubscribe("mqtt/" + inputSubscribe.value);
 	})
 
-	client.on("message", function (topic, payload) {
-		timeStamp = new Date();
-		var tr = document.createElement("tr");
-		var tdTopic = document.createElement("td");
-		var tdPayload = document.createElement("td");
-		var tdTimeStamp = document.createElement("td");
-		tdTopic.style.fontSize = "11px";
-		tdPayload.style.fontSize = "11px";
-		tdTimeStamp.style.fontSize = "11px";
-		tdTopic.appendChild(document.createTextNode(topic.substring(5)));
-		tdPayload.appendChild(document.createTextNode(payload));
-		tdTimeStamp.appendChild(document.createTextNode(timeStamp));
-		tr.appendChild(tdTopic);
-		tr.appendChild(tdPayload);
-		tr.appendChild(tdTimeStamp);
-		tableBody.appendChild(tr);
-	})
-
-	client.on("message", function (topic, payload) {
-		timeStamp = new Date();
-		var tr = document.createElement("tr");
-		var tdTopic = document.createElement("td");
-		var tdPayload = document.createElement("td");
-		var tdTimeStamp = document.createElement("td");
-		tdTopic.style.fontSize = "11px";
-		tdPayload.style.fontSize = "11px";
-		tdTimeStamp.style.fontSize = "11px";
-		tdTopic.appendChild(document.createTextNode(topic.substring(5)));
-		tdPayload.appendChild(document.createTextNode(payload));
-		tdTimeStamp.appendChild(document.createTextNode(timeStamp));
-		tr.appendChild(tdTopic);
-		tr.appendChild(tdPayload);
-		tr.appendChild(tdTimeStamp);
-		tableBody.appendChild(tr);
-	})
-
-
 	clickDisconnect.addEventListener("click", function () {
 		client.end();
-		// Status.innerHTML = "Disconnected!";
-		// Status.style.color = 'red';
+		Status.value = "Disconnected succesfully!";
 		clickPublish.disabled = true;
 		clickSubscribe.disabled = true;
 		clickUnsubscribe.disabled = true;
 	})
 });
-
-
-
-
-
-
 
 
 
